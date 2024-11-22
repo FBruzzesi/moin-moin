@@ -1,0 +1,14 @@
+[project]
+name = "moin-moin"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+moin-moin = "moin_moin:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
