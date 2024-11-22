@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "numpy<2",
+    "pillow==10.4.0",
+    "streamlit>=1.40.1",
 ]
 
 [project.scripts]
