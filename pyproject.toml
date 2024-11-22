@@ -5,18 +5,27 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=0.26.0",
     "geopy>=2.4.1",
     "numpy<2",
+    "outlines>=0.1.4",
     "pillow==10.4.0",
     "sentence-transformers==3.3.1",
     "streamlit>=1.40.1",
-    "torch==2.2.2",
+    "torch==2.2.2+cpu",
+    "transformers>=4.46.3",
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu"},
 ]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
+
 
 [project.scripts]
 moin-moin = "moin_moin:main"
