@@ -8,6 +8,7 @@ class SimilarityModel:
     def set_text_embedding(self, text_options: dict):
         self.labels = list(text_options.keys())
         self.text_embedding = self.encode_text(list(text_options.values()))
+        return self
 
     def encode_image(self, image):
         return self.model.encode(image)

@@ -1,11 +1,14 @@
-import numpy as np
 import pandas as pd
 import streamlit as st
 from PIL import Image
 from geopy.geocoders import Nominatim
+import httpx
+from io import BytesIO
 
 
-from moin_moin.backend.api import get_institution
+HOST = "http://127.0.0.1"
+PORT = 8091
+
 
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
@@ -61,11 +64,23 @@ def main() -> None:
             image = load_image(raw_image)
             st.image(image)
 
-            inst = get_institution(image)
+            try:
+                buffer = BytesIO()
+                image.save(buffer, format="jpeg")
+                buffer.seek(0)
+                result = httpx.post(
+                    f"{HOST}:{PORT}/predict",
+                    data={"height": image.height, "width": image.width},
+                    files={"file": ("image.jpg", buffer , "image/jpeg")},
+                )
+                # TODO: parse result
+            except:
+                from moin_moin.backend.api import _predict
+                result = _predict(image)
 
         st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
-        st.write("Predicted Institution: ", inst)
+        st.write("Predicted Institution: ", result.text)
 
 
 if __name__ == "__main__":
