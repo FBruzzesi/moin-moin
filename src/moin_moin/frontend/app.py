@@ -30,11 +30,6 @@ def parse_location(raw_loc: str):
     return loc
 
 
-def get_prediction(img, tags, notes):
-    # TODO: call model Prediction
-    return "A very accurate prediction"
-
-
 def main() -> None:
     st.sidebar.title("Tell us about the issue...")
 
@@ -68,9 +63,9 @@ def main() -> None:
 
             inst = get_institution(image)
 
-    st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
+        st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
-    st.write("Predicted Institution: ", inst)
+        st.write("Predicted Institution: ", inst)
 
 
 if __name__ == "__main__":
