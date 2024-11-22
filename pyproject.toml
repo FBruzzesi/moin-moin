@@ -7,8 +7,15 @@ requires-python = ">=3.12"
 dependencies = [
     "numpy<2",
     "pillow==10.4.0",
+    "sentence-transformers==3.3.1",
     "streamlit>=1.40.1",
+    "torch==2.2.2",
 ]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [project.scripts]
 moin-moin = "moin_moin:main"
