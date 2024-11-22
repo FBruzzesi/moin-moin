@@ -1,4 +1,3 @@
-# streamlit run src/moin_moin/frontend/__main__.py
 from typing import NamedTuple
 
 import pandas as pd
