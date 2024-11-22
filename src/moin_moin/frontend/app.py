@@ -1,9 +1,12 @@
-from typing import NamedTuple
-
+import numpy as np
 import pandas as pd
 import streamlit as st
 from PIL import Image
 from geopy.geocoders import Nominatim
+
+
+from moin_moin.backend.api import get_institution
+
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
 TAGS = [
@@ -35,7 +38,7 @@ def get_prediction(img, tags, notes):
 def main() -> None:
     st.sidebar.title("Tell us about the issue...")
 
-    image = st.sidebar.file_uploader(
+    raw_image = st.sidebar.file_uploader(
         label="Upload an image",
         type=["png", "jpg"],
     )
@@ -58,13 +61,16 @@ def main() -> None:
     )
 
     if st.sidebar.button("Submit"):
-        if image is not None:
+        if raw_image is not None:
             st.write("This is your image:")
-            img = load_image(image)
-            st.image(img)
+            image = load_image(raw_image)
+            st.image(image)
+
+            inst = get_institution(image)
+
     st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
-    st.write("Prediction: ", get_prediction(image, tags, notes))
+    st.write("Predicted Institution: ", inst)
 
 
 if __name__ == "__main__":
