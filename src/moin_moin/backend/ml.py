@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 class ClipModel:
     def __init__(self, **kwargs):
         self.model = SentenceTransformer("clip-ViT-B-32")
+        self.model.eval()
         text_options = kwargs["text_options"]
         self.labels = list(text_options.keys())
         self.text_embedding = self.model.encode(list(text_options.values()))
