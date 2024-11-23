@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 
 ML_MODEL: dict[str, ClipModel] = {}
 
-DB_NAME: Final[str] = "sqlite:///moin-moin.db"
+DB_NAME: Final[str] = "sqlite:///db/moin-moin.db"
 ENGINE: Final[Engine] = create_engine(DB_NAME)
 
 INSTITUTIONS = {
