@@ -72,7 +72,7 @@ def main() -> None:
                 from moin_moin.backend.api import institutions
                 from moin_moin.backend.ml import ClipModel
 
-                model = ClipModel().fit(institutions)
+                model = ClipModel(text_options=institutions)
                 result = model.predict(image)
 
         st.header(f"Assigned Institution: {result}")
