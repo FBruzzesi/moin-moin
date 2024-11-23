@@ -21,6 +21,8 @@ TAGS = [
 ]
 
 
+
+
 def load_image(image):
     return Image.open(image).convert("RGB")
 
@@ -60,14 +62,28 @@ def main() -> None:
             image = load_image(raw_image)
 
             try:
+                
                 buffer = BytesIO()
                 image.save(buffer, format="jpeg")
                 buffer.seek(0)
+
+                record_id = httpx.post(
+                    f"{HOST}:{PORT}/save",
+                    data={
+                        "latitude": loc.latitude,
+                        "longitude": loc.longitude,
+                        "notes": notes,
+                        "tags": ",".join(tags) if tags else "",
+                        },
+                    files={"image_bytes": ("image.jpg", buffer , "image/jpeg")},
+                ).json()["record-id"]
+
                 result = httpx.post(
                     f"{HOST}:{PORT}/predict",
-                    data={"height": image.height, "width": image.width},
-                    files={"file": ("image.jpg", buffer, "image/jpeg")},
+                    data={"record_id": record_id},
+                    files={"file": ("image.jpg", buffer , "image/jpeg")},
                 ).json()["prediction"]
+
             except:
                 from moin_moin.backend.api import institutions
                 from moin_moin.backend.ml import ClipModel
