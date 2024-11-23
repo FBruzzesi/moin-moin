@@ -72,15 +72,14 @@ def main() -> None:
                     f"{HOST}:{PORT}/predict",
                     data={"height": image.height, "width": image.width},
                     files={"file": ("image.jpg", buffer , "image/jpeg")},
-                )
-                # TODO: parse result
+                ).json()["prediction"]
             except:
                 from moin_moin.backend.api import _predict
                 result = _predict(image)
 
         st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
-        st.write("Predicted Institution: ", result.text)
+        st.write("Predicted Institution: ", result)
 
 
 if __name__ == "__main__":
