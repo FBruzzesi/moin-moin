@@ -102,6 +102,6 @@ async def load_records(session: SessionDep):
         Record.notes,
         Record.tags,
         Prediction.prediction,
-    )  # .join(Prediction)
+    ).join(Prediction)
     records = session.exec(statement).all()
     return [PublicRecord(**row._mapping) for row in records]
