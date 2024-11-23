@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
 
   backend:
@@ -8,7 +6,7 @@ services:
       dockerfile: docker/backend.dockerfile
     ports:
       - "8081:8081"
-  
+
   frontend:
     build:
       context: .
@@ -17,7 +15,3 @@ services:
       - "8501:8501"
     depends_on:
       - backend
-    
-  
-
-  

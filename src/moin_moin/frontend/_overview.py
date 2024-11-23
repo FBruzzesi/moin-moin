@@ -4,11 +4,10 @@ import httpx
 import pandas as pd
 import streamlit as st
 
-from moin_moin.frontend._conf import HOST
+from moin_moin.frontend._conf import BACKEND_URL
 from moin_moin.frontend._conf import INSTITUTION_MAPPING
-from moin_moin.frontend._conf import PORT
 
-result = httpx.get(f"{HOST}:{PORT}/load-records").json()
+result = httpx.get(f"{BACKEND_URL}/load-records").json()
 
 location_df = (
     pd.DataFrame(result)
