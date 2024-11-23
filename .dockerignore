@@ -1,0 +1,31 @@
+# Folders
+.git/
+.github/
+docker/
+docs/
+kubernetes/
+notebooks/
+tests/
+data/
+models/
+requirements/
+.ruff_cache/
+*.db
+
+# Files
+.dockerignore
+.gitignore
+.pre-commit-config.yaml
+mkdocs.yaml
+README.md
+Makefile
+
+# Various
+**/__pychache__
+**/*.egg-info
+**.pyc
+**.pytest_cache
+**.ipynb
+**.bat
+**.egg-info
+**/build
