@@ -21,6 +21,5 @@ location_df = (
     .rename(columns={"latitude": "lat", "longitude": "lon"})
     .replace(INSTITUTION_MAPPING)
 )
-print(location_df.loc[:, ["lat", "lon", "prediction"]])
-st.map(data=location_df.loc[:, ["lat", "lon", "prediction"]], color="prediction")
 
+st.map(data=location_df.loc[:, ["lat", "lon", "prediction"]], color="prediction", size=10)
