@@ -10,7 +10,6 @@ HOST = "http://127.0.0.1"
 PORT = 8091
 
 
-
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
 TAGS = [
     "Street",
@@ -71,12 +70,13 @@ def main() -> None:
                 result = httpx.post(
                     f"{HOST}:{PORT}/predict",
                     data={"height": image.height, "width": image.width},
-                    files={"file": ("image.jpg", buffer , "image/jpeg")},
+                    files={"file": ("image.jpg", buffer, "image/jpeg")},
                 ).json()["prediction"]
             except:
                 from moin_moin.backend.api import institutions
                 from moin_moin.backend.ml import ClipModel
-                model = ClipModel().fit(institutions)
+
+                model = ClipModel(text_options=institutions)
                 result = model.predict(image)
 
         st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))

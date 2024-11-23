@@ -16,17 +16,18 @@ institutions = {
     "Construction Department": "The construction department deals with building and infrastructure related topics.",
 }
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Load the ML model
-    ML_MODEL["similarity_model"] = ClipModel().fit(institutions)
+    ML_MODEL["similarity_model"] = ClipModel(text_options=institutions)
     yield
     # Clean up the ML models and release the resources
     ML_MODEL.clear()
 
 
-
 app = FastAPI(lifespan=lifespan)
+
 
 def _predict(img_array: Image):
     """This function decoupled from the API exists for debugging purposes."""
@@ -41,7 +42,6 @@ def root():
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    
     file_bytes = await file.read()
     buffer = BytesIO(file_bytes)
     image = Image.open(buffer)
