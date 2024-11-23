@@ -7,9 +7,7 @@ from io import BytesIO
 
 
 HOST = "http://127.0.0.1"
-PORT = 8091
-
-
+PORT = 8000
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
 TAGS = [
@@ -64,20 +62,26 @@ def main() -> None:
             image = load_image(raw_image)
             st.image(image)
 
-            try:
-                buffer = BytesIO()
-                image.save(buffer, format="jpeg")
-                buffer.seek(0)
-                result = httpx.post(
-                    f"{HOST}:{PORT}/predict",
-                    data={"height": image.height, "width": image.width},
-                    files={"file": ("image.jpg", buffer , "image/jpeg")},
-                ).json()["prediction"]
-            except:
-                from moin_moin.backend.api import institutions
-                from moin_moin.backend.ml import ClipModel
-                model = ClipModel().fit(institutions)
-                result = model.predict(image)
+            buffer = BytesIO()
+            image.save(buffer, format="jpeg")
+            buffer.seek(0)
+
+            record_id = httpx.post(
+                f"{HOST}:{PORT}/save",
+                data={
+                    "latitude": loc.latitude,
+                    "longitude": loc.longitude,
+                    "notes": notes,
+                    "tags": ",".join(tags) if tags else "",
+                    },
+                files={"image_bytes": ("image.jpg", buffer , "image/jpeg")},
+            ).json()["record-id"]
+
+            result = httpx.post(
+                f"{HOST}:{PORT}/predict",
+                data={"record_id": record_id},
+                files={"file": ("image.jpg", buffer , "image/jpeg")},
+            ).json()["prediction"]
 
         st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
