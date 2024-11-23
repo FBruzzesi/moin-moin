@@ -5,9 +5,7 @@ from geopy.geocoders import Nominatim
 import httpx
 from io import BytesIO
 
-
-HOST = "http://127.0.0.1"
-PORT = 8091
+from moin_moin.frontend.app_conf import HOST, PORT
 
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
@@ -46,8 +44,6 @@ def main() -> None:
     raw_loc = st.sidebar.text_input(
         "Enter your location (e.g., city name, street, number):"
     )
-    loc = parse_location(raw_loc)
-
 
     tags = st.sidebar.multiselect("Select tags for the image:", TAGS)
 
@@ -58,38 +54,42 @@ def main() -> None:
     )
 
     if st.sidebar.button("Submit"):
+        loc = parse_location(raw_loc)
+        if loc is None:
+            st.error("Location not found. Please try again.")
+            return
+
         if raw_image is not None:
             image = load_image(raw_image)
 
-            try:
-                
-                buffer = BytesIO()
-                image.save(buffer, format="jpeg")
-                buffer.seek(0)
+            # try:
+            buffer = BytesIO()
+            image.save(buffer, format="jpeg")
+            buffer.seek(0)
 
-                record_id = httpx.post(
-                    f"{HOST}:{PORT}/save",
-                    data={
-                        "latitude": loc.latitude,
-                        "longitude": loc.longitude,
-                        "notes": notes,
-                        "tags": ",".join(tags) if tags else "",
-                        },
-                    files={"image_bytes": ("image.jpg", buffer , "image/jpeg")},
-                ).json()["record-id"]
+            record_id = httpx.post(
+                f"{HOST}:{PORT}/save",
+                data={
+                    "latitude": getattr(loc, "latitude", None),
+                    "longitude": getattr(loc, "longitude", None),
+                    "notes": notes,
+                    "tags": ",".join(tags) if tags else "",
+                    },
+                files={"image_bytes": ("image.jpg", buffer , "image/jpeg")},
+            ).json()["record-id"]
 
-                result = httpx.post(
-                    f"{HOST}:{PORT}/predict",
-                    data={"record_id": record_id},
-                    files={"file": ("image.jpg", buffer , "image/jpeg")},
-                ).json()["prediction"]
+            result = httpx.post(
+                f"{HOST}:{PORT}/predict",
+                data={"record_id": record_id},
+                files={"file": ("image.jpg", buffer , "image/jpeg")},
+            ).json()["prediction"]
 
-            except:
-                from moin_moin.backend.api import institutions
-                from moin_moin.backend.ml import ClipModel
+            # except:
+            #     from moin_moin.backend.api import institutions
+            #     from moin_moin.backend.ml import ClipModel
 
-                model = ClipModel(text_options=institutions)
-                result = model.predict(image)
+            #     model = ClipModel(text_options=institutions)
+            #     result = model.predict(image)
 
         st.header(f"Assigned Institution: {result}")
         st.write("---")
