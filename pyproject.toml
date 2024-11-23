@@ -10,15 +10,9 @@ dependencies = [
     "httpx>=0.27.2",
     "numpy<2",
     "pillow==10.4.0",
-    "sentence-transformers==3.3.1",
+    "sentence-transformers>=3.3.1",
     "sqlmodel>=0.0.22",
     "streamlit>=1.40.1",
-    "torch==2.2.2+cpu",
-]
-
-[tool.uv.sources]
-torch = [
-  { index = "pytorch-cpu"},
 ]
 
 [[tool.uv.index]]
@@ -37,6 +31,7 @@ build-backend = "hatchling.build"
 dev = [
     "fastbook>=0.0.29",
     "ipdb>=0.13.13",
+    "ipyplot>=1.1.2",
     "ipython>=8.29.0",
     "jupyterlab>=4.3.1",
     "jupyterlab-vim>=4.1.4",

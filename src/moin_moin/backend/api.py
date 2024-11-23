@@ -28,10 +28,11 @@ institutions = {
 }
 
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Load the ML model
-    ML_MODEL["similarity_model"] = ClipModel().fit(institutions)
+    ML_MODEL["similarity_model"] = ClipModel(text_options=institutions)
     yield
     # Clean up the ML models and release the resources
     ML_MODEL.clear()
