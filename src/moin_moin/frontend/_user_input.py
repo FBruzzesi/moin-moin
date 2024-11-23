@@ -1,16 +1,23 @@
+from __future__ import annotations
+
+from io import BytesIO
+from typing import Any
+from typing import Final
+
+import httpx
 import pandas as pd
 import streamlit as st
-from PIL import Image
 from geopy.geocoders import Nominatim
-import httpx
-from io import BytesIO
+from PIL import Image
 
-from moin_moin.frontend.app_conf import HOST, PORT
-
+from moin_moin.frontend._conf import HOST
+from moin_moin.frontend._conf import PORT
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
-MAX_COMMENT_CHARS = 250
-TAGS = [
+
+MAX_COMMENT_CHARS: Final[str] = 250
+
+TAGS: Final[list[str]] = [
     "Street",
     "Lights",
     "Rubish",
@@ -19,21 +26,14 @@ TAGS = [
 ]
 
 
-
-
-def load_image(image):
-    return Image.open(image).convert("RGB")
-
-
-def parse_location(raw_loc: str):
+def parse_location(raw_loc: str) -> None | Any:  # noqa: ANN401
     if not raw_loc:
-        print("No location given")
         return None
-    loc = GEOLOCATOR.geocode(raw_loc)
-    return loc
+    return GEOLOCATOR.geocode(raw_loc)
 
 
 def main() -> None:
+    """Render user input page."""
     st.sidebar.title("Tell us about the issue...")
 
     raw_image = st.sidebar.file_uploader(
@@ -41,9 +41,7 @@ def main() -> None:
         type=["png", "jpg"],
     )
 
-    raw_loc = st.sidebar.text_input(
-        "Enter your location (e.g., city name, street, number):"
-    )
+    raw_loc = st.sidebar.text_input("Enter your location (e.g., city name, street, number):")
 
     tags = st.sidebar.multiselect("Select tags for the image:", TAGS)
 
@@ -60,9 +58,7 @@ def main() -> None:
             return
 
         if raw_image is not None:
-            image = load_image(raw_image)
-
-            # try:
+            image = Image.open(raw_image).convert("RGB")
             buffer = BytesIO()
             image.save(buffer, format="jpeg")
             buffer.seek(0)
@@ -74,26 +70,21 @@ def main() -> None:
                     "longitude": getattr(loc, "longitude", None),
                     "notes": notes,
                     "tags": ",".join(tags) if tags else "",
-                    },
-                files={"image_bytes": ("image.jpg", buffer , "image/jpeg")},
+                },
+                files={"image_bytes": ("image.jpg", buffer, "image/jpeg")},
             ).json()["record-id"]
 
             result = httpx.post(
                 f"{HOST}:{PORT}/predict",
                 data={"record_id": record_id},
-                files={"file": ("image.jpg", buffer , "image/jpeg")},
+                files={"file": ("image.jpg", buffer, "image/jpeg")},
             ).json()["prediction"]
-
-            # except:
-            #     from moin_moin.backend.api import institutions
-            #     from moin_moin.backend.ml import ClipModel
-
-            #     model = ClipModel(text_options=institutions)
-            #     result = model.predict(image)
 
         st.header(f"Assigned Institution: {result}")
         st.write("---")
-        left_column, right_column = st.columns(2,)
+        left_column, right_column = st.columns(
+            2,
+        )
         if loc:
             right_column.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
             right_column.write(loc)
@@ -101,5 +92,6 @@ def main() -> None:
             right_column.write("Location not found. Please try again.")
 
         left_column.image(image)
+
 
 main()

@@ -1,7 +1,10 @@
-HOST = "http://127.0.0.1"
-PORT = 8000
+from __future__ import annotations
 
-INSTITUTION_MAPPING = {
+from typing import Final
+
+HOST: Final[str] = "http://127.0.0.1"
+PORT: Final[int] = 8081
+INSTITUTION_MAPPING: Final[dict[str, str]] = {
     "Police Department": "#48b5a5",
     "Fire Department": "#7b64ab",
     "Hospital": "#20be64",

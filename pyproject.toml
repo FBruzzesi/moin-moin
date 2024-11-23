@@ -5,20 +5,31 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi[standard]>=0.115.5",
-    "geopy>=2.4.1",
-    "httpx>=0.27.2",
-    "numpy<2",
+    "numpy==1.26.4",
     "pillow==10.4.0",
-    "sentence-transformers>=3.3.1",
-    "sqlmodel>=0.0.22",
-    "streamlit>=1.40.1",
+]
+
+[project.optional-dependencies]
+frontend = [
+    "geopy==2.4.1",
+    "httpx==0.27.2",
+    "streamlit==1.40.1",
+]
+
+backend = [
+    "fastapi[standard]==0.115.5",
+    "sqlmodel==0.0.22",
+    "sentence-transformers==3.3.1",
+    "torch==2.5.1+cpu",
 ]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu"}]
 
 [project.scripts]
 moin-moin = "moin_moin:main"
@@ -27,12 +38,22 @@ moin-moin = "moin_moin:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[dependency-groups]
-dev = [
-    "fastbook>=0.0.29",
-    "ipdb>=0.13.13",
-    "ipyplot>=1.1.2",
-    "ipython>=8.29.0",
-    "jupyterlab>=4.3.1",
-    "jupyterlab-vim>=4.1.4",
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+fix = true
+
+lint.select=["ALL"]
+
+lint.ignore = [
+  "COM812",
+  "ISC001",
+  "D203",
+  "D211",
+  "D213",
 ]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+required-imports = ["from __future__ import annotations"]

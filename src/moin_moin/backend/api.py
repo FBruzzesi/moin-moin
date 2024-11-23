@@ -1,25 +1,42 @@
+"""Module that builds FastAPI application with endpoints to save, predict and gather data."""
+
+from __future__ import annotations
+
 from contextlib import asynccontextmanager
-from typing import Annotated
-
-from fastapi import FastAPI, File, UploadFile, Form, Depends
-from PIL import Image
 from io import BytesIO
-from sqlmodel import Session, select
-from moin_moin.backend.ml import ClipModel
-from moin_moin.backend.db import Record, Prediction, engine, PublicRecord
+from typing import TYPE_CHECKING
+from typing import Annotated
+from typing import Final
+
+from fastapi import Depends
+from fastapi import FastAPI
+from fastapi import File
+from fastapi import Form
+from fastapi import UploadFile
+from PIL import Image
+from sqlmodel import Session
+from sqlmodel import SQLModel
+from sqlmodel import create_engine
+from sqlmodel import select
+
+from moin_moin.backend._db import Prediction
+from moin_moin.backend._db import PublicRecord
+from moin_moin.backend._db import UserUploadData
+from moin_moin.backend._ml import ClipModel
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
+    from collections.abc import Generator
+
+    from sqlmodel import Engine
 
 
-ML_MODEL = {}
+ML_MODEL: dict[str, ClipModel] = {}
 
+DB_NAME: Final[str] = "sqlite:///moin-moin.db"
+ENGINE: Final[Engine] = create_engine(DB_NAME)
 
-def get_session():
-    with Session(engine) as session:
-        yield session
-
-
-SessionDep = Annotated[Session, Depends(get_session)]
-
-institutions = {
+INSTITUTIONS = {
     "Police Department": "The police deals with crime and violence related topics.",
     "Fire Department": "The fire department deals with fire and other emergency situations.",
     "Hospital": "The hospital deals with health and medical related topics.",
@@ -28,42 +45,48 @@ institutions = {
 }
 
 
+def get_session() -> Generator[Session, None, None]:
+    """Yield SQLModel session."""
+    with Session(ENGINE) as session:
+        yield session
+
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Load the ML model
-    ML_MODEL["similarity_model"] = ClipModel(text_options=institutions)
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:  # noqa: ARG001
+    """FastAPI Lifespan: loads and instantiate the model at startup, delete at shutdown."""
+    SQLModel.metadata.create_all(ENGINE)
+    ML_MODEL["similarity_model"] = ClipModel(text_options=INSTITUTIONS)
+
     yield
-    # Clean up the ML models and release the resources
+
     ML_MODEL.clear()
 
 
 app = FastAPI(lifespan=lifespan)
 
 
-def _predict(img_array: Image):
-    """This function decoupled from the API exists for debugging purposes."""
-    return ML_MODEL["similarity_model"].predict(img_array)
-
-
 @app.get("/")
-def root():
+def root() -> dict[str, str]:
     """Root endpoint."""
     return {"message": "Health"}
 
 
 @app.post("/save")
-async def save(
+async def save(  # noqa: PLR0913
     session: SessionDep,
-    latitude: float = Form(...),
-    longitude: float = Form(...),
-    notes: str = Form(...),
-    tags: str = Form(...),
-    image_bytes: UploadFile = File(...),
-):
+    latitude: Annotated[float, Form()],
+    longitude: Annotated[float, Form()],
+    notes: Annotated[str, Form()],
+    tags: Annotated[str, Form()],
+    image_bytes: Annotated[UploadFile, File()],
+) -> dict[str, int | None]:
+    """Save the input data into database records into user upload data table."""
     image_bytes = await image_bytes.read()
-    record = Record(
-        image=image_bytes,
+    record = UserUploadData(
+        image=image_bytes,  # type: ignore[assignment]
         latitude=latitude,
         longitude=longitude,
         notes=notes,
@@ -79,12 +102,15 @@ async def save(
 
 @app.post("/predict")
 async def predict(
-    session: SessionDep, record_id: int = Form(), file: UploadFile = File(...)
-):
+    session: SessionDep,
+    record_id: Annotated[int, Form()],
+    file: Annotated[UploadFile, File(...)],
+) -> dict[str, str]:
+    """Predict image category via ML model."""
     file_bytes = await file.read()
     buffer = BytesIO(file_bytes)
     image = Image.open(buffer)
-    prediction = _predict(image)
+    prediction = ML_MODEL["similarity_model"].predict(image)
 
     pred_record = Prediction(record_id=record_id, prediction=prediction)
 
@@ -95,13 +121,14 @@ async def predict(
 
 
 @app.get("/load-records", response_model=list[PublicRecord])
-async def load_records(session: SessionDep):
+async def load_records(session: SessionDep) -> list[PublicRecord]:
+    """Load all the records with their predictions, ignores associated image."""
     statement = select(
-        Record.latitude,
-        Record.longitude,
-        Record.notes,
-        Record.tags,
+        UserUploadData.latitude,
+        UserUploadData.longitude,
+        UserUploadData.notes,
+        UserUploadData.tags,
         Prediction.prediction,
     ).join(Prediction)
     records = session.exec(statement).all()
-    return [PublicRecord(**row._mapping) for row in records]
+    return [PublicRecord(**row._mapping) for row in records]  # noqa: SLF001
