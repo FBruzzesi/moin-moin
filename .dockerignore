@@ -6,6 +6,8 @@
 data/
 docker/
 nbs/
+models/
+db/
 
 .git/
 .github/

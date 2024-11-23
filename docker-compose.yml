@@ -9,8 +9,6 @@ services:
     volumes:
       - ./db:/app/db
       - ./models:/app/models     # Mount machine learning model folder
-    environment:
-      - ENV=docker-compose
 
   frontend:
     build:
@@ -20,3 +18,5 @@ services:
       - "8501:8501"
     depends_on:
       - backend
+    environment:
+      - ENV=docker-compose

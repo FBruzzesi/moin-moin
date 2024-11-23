@@ -71,12 +71,14 @@ def main() -> None:
                     "tags": ",".join(tags) if tags else "",
                 },
                 files={"image_bytes": ("image.jpg", buffer, "image/jpeg")},
+                timeout=10,
             ).json()["record-id"]
 
             result = httpx.post(
                 f"{BACKEND_URL}/predict",
                 data={"record_id": record_id},
                 files={"file": ("image.jpg", buffer, "image/jpeg")},
+                timeout=10,
             ).json()["prediction"]
 
         st.header(f"Assigned Institution: {result}")
