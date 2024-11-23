@@ -30,6 +30,7 @@ build-backend = "hatchling.build"
 dev = [
     "fastbook>=0.0.29",
     "ipdb>=0.13.13",
+    "ipyplot>=1.1.2",
     "ipython>=8.29.0",
     "jupyterlab>=4.3.1",
     "jupyterlab-vim>=4.1.4",
