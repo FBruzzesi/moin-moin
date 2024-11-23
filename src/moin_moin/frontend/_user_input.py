@@ -10,8 +10,7 @@ import streamlit as st
 from geopy.geocoders import Nominatim
 from PIL import Image
 
-from moin_moin.frontend._conf import HOST
-from moin_moin.frontend._conf import PORT
+from moin_moin.frontend._conf import BACKEND_URL
 
 GEOLOCATOR = Nominatim(user_agent="location_sharing_app")
 
@@ -64,7 +63,7 @@ def main() -> None:
             buffer.seek(0)
 
             record_id = httpx.post(
-                f"{HOST}:{PORT}/save",
+                f"{BACKEND_URL}/save",
                 data={
                     "latitude": getattr(loc, "latitude", None),
                     "longitude": getattr(loc, "longitude", None),
@@ -72,12 +71,14 @@ def main() -> None:
                     "tags": ",".join(tags) if tags else "",
                 },
                 files={"image_bytes": ("image.jpg", buffer, "image/jpeg")},
+                timeout=10,
             ).json()["record-id"]
 
             result = httpx.post(
-                f"{HOST}:{PORT}/predict",
+                f"{BACKEND_URL}/predict",
                 data={"record_id": record_id},
                 files={"file": ("image.jpg", buffer, "image/jpeg")},
+                timeout=10,
             ).json()["prediction"]
 
         st.header(f"Assigned Institution: {result}")

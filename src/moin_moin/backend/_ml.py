@@ -17,7 +17,7 @@ class ClipModel:
     """
 
     def __init__(self: Self, text_options: dict[str, str]) -> None:
-        self.model = SentenceTransformer("clip-ViT-B-32")
+        self.model = SentenceTransformer("clip-ViT-B-32", cache_folder="models")
         self.model.eval()
         self.labels = list(text_options.keys())
         self.text_embedding = self.model.encode(list(text_options.values()))

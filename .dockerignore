@@ -1,0 +1,34 @@
+# Folders
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+.venv/
+data/
+docker/
+nbs/
+models/
+db/
+
+.git/
+.github/
+docker/
+docs/
+kubernetes/
+
+# Files
+.dockerignore
+.gitignore
+.pre-commit-config.yaml
+mkdocs.yaml
+README.md
+Makefile
+
+# Various
+**/__pychache__
+**/*.egg-info
+**.pyc
+**.pytest_cache
+**.ipynb
+**.bat
+**.egg-info
+**/build
