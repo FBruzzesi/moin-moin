@@ -2,13 +2,11 @@ from sentence_transformers import SentenceTransformer
 
 
 class ClipModel:
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.model = SentenceTransformer("clip-ViT-B-32")
-
-    def fit(self, text_options: dict):
+        text_options = kwargs["text_options"]
         self.labels = list(text_options.keys())
         self.text_embedding = self.model.encode(list(text_options.values()))
-        return self
 
     def predict(self, text_or_image):
         # text has to be predefined e.g. police, fire department, etc
