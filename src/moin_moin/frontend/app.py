@@ -74,8 +74,10 @@ def main() -> None:
                     files={"file": ("image.jpg", buffer , "image/jpeg")},
                 ).json()["prediction"]
             except:
-                from moin_moin.backend.api import _predict
-                result = _predict(image)
+                from moin_moin.backend.api import institutions
+                from moin_moin.backend.ml import ClipModel
+                model = ClipModel().fit(institutions)
+                result = model.predict(image)
 
         st.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
 
