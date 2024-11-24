@@ -76,7 +76,7 @@ def main() -> None:
 
             result = httpx.post(
                 f"{BACKEND_URL}/predict",
-                data={"record_id": record_id},
+                data={"record_id": record_id, "notes": notes},
                 files={"file": ("image.jpg", buffer, "image/jpeg")},
                 timeout=10,
             ).json()["prediction"]
