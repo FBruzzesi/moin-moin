@@ -104,13 +104,14 @@ async def save(  # noqa: PLR0913
 async def predict(
     session: SessionDep,
     record_id: Annotated[int, Form()],
+    notes: Annotated[str, Form()],
     file: Annotated[UploadFile, File(...)],
 ) -> dict[str, str]:
     """Predict image category via ML model."""
     file_bytes = await file.read()
     buffer = BytesIO(file_bytes)
     image = Image.open(buffer)
-    prediction = ML_MODEL["similarity_model"].predict(image)
+    prediction = ML_MODEL["similarity_model"].predict(image, notes)
 
     pred_record = Prediction(record_id=record_id, prediction=prediction)
 
