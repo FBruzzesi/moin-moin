@@ -5,8 +5,9 @@ from __future__ import annotations
 import streamlit as st
 
 st.set_page_config(page_title="Smart cities", layout="wide", page_icon="🏙️")
-create_page = st.Page("_user_input.py", title="Upload Issues", icon="🔧")
-overview = st.Page("_overview.py", title="Issue Tracker", icon="🗺️")
+st.title("🏡 Moin Moin")
+report_an_issue_page = st.Page("_report_an_issue_page.py", title="Report an issue", icon="🔧")
+issue_tracker_page = st.Page("_issue_tracker_page.py", title="Issue tracker", icon="🗺️")
 
-pg = st.navigation([create_page, overview])
+pg = st.navigation([report_an_issue_page, issue_tracker_page])
 pg.run()

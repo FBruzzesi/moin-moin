@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from datetime import UTC
+from datetime import datetime
+
 from sqlmodel import Field
 from sqlmodel import SQLModel
 
@@ -10,7 +13,7 @@ class UserUploadData(SQLModel, table=True):
     latitude: float
     longitude: float
     notes: str
-    tags: str
+    timestamp: datetime = Field(default=datetime.now(tz=UTC))
 
 
 class Prediction(SQLModel, table=True):
@@ -23,5 +26,5 @@ class PublicRecord(SQLModel):
     latitude: float
     longitude: float
     notes: str
-    tags: str
     prediction: str
+    timestamp: datetime

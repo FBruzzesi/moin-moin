@@ -31,18 +31,19 @@ def parse_location(raw_loc: str) -> None | Any:  # noqa: ANN401
     return GEOLOCATOR.geocode(raw_loc)
 
 
-def main() -> None:
+def user_input_page() -> None:
     """Render user input page."""
-    st.sidebar.title("Tell us about the issue...")
+    st.sidebar.title("Tell us about your issue!")
+    st.sidebar.markdown(
+        "This page allows a citizen to report issues found around a city by just uploading an image and location."
+    )
 
     raw_image = st.sidebar.file_uploader(
         label="Upload an image",
         type=["png", "jpg"],
     )
 
-    raw_loc = st.sidebar.text_input("Enter your location (e.g., city name, street, number):")
-
-    tags = st.sidebar.multiselect("Select tags for the image:", TAGS)
+    raw_loc = st.sidebar.text_input("Enter your location:", placeholder="Street, number, city name")
 
     notes = st.sidebar.text_area(
         label="Additional information",
@@ -68,7 +69,6 @@ def main() -> None:
                     "latitude": getattr(loc, "latitude", None),
                     "longitude": getattr(loc, "longitude", None),
                     "notes": notes,
-                    "tags": ",".join(tags) if tags else "",
                 },
                 files={"image_bytes": ("image.jpg", buffer, "image/jpeg")},
                 timeout=10,
@@ -83,9 +83,7 @@ def main() -> None:
 
         st.header(f"Assigned Institution: {result}")
         st.write("---")
-        left_column, right_column = st.columns(
-            2,
-        )
+        left_column, right_column = st.columns(2)
         if loc:
             right_column.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))
             right_column.write(loc)
@@ -95,4 +93,4 @@ def main() -> None:
         left_column.image(image)
 
 
-main()
+user_input_page()
