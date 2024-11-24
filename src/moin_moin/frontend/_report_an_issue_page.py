@@ -81,8 +81,8 @@ def user_input_page() -> None:
                 timeout=10,
             ).json()["prediction"]
 
-        st.header(f"Assigned Institution: {result}")
         st.write("---")
+        st.success(f"Assigned to: {result}")
         left_column, right_column = st.columns(2)
         if loc:
             right_column.map(data=pd.DataFrame({"lat": [loc.latitude], "lon": [loc.longitude]}))

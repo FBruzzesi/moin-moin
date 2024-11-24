@@ -19,7 +19,8 @@ def issue_tracker_page() -> None:
         .assign(_color=lambda t: t["prediction"].map(INSTITUTION_COLOR_MAPPING))
     )
 
-    st.header(f"Found {result.shape[0]} issues")
+    st.write("---")
+    st.warning(f"Found {result.shape[0]} issues")
 
     left_column, right_column = st.columns(2)
 
