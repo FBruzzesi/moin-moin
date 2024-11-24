@@ -33,7 +33,10 @@ def parse_location(raw_loc: str) -> None | Any:  # noqa: ANN401
 
 def main() -> None:
     """Render user input page."""
-    st.sidebar.title("Tell us about the issue...")
+    st.sidebar.title("Tell us about your issue")
+    st.sidebar.markdown(
+        "This page allows a citizen to report issues found around a city by just uploading an image and location"
+    )
 
     raw_image = st.sidebar.file_uploader(
         label="Upload an image",
@@ -41,8 +44,6 @@ def main() -> None:
     )
 
     raw_loc = st.sidebar.text_input("Enter your location (e.g., city name, street, number):")
-
-    tags = st.sidebar.multiselect("Select tags for the image:", TAGS)
 
     notes = st.sidebar.text_area(
         label="Additional information",
@@ -68,7 +69,6 @@ def main() -> None:
                     "latitude": getattr(loc, "latitude", None),
                     "longitude": getattr(loc, "longitude", None),
                     "notes": notes,
-                    "tags": ",".join(tags) if tags else "",
                 },
                 files={"image_bytes": ("image.jpg", buffer, "image/jpeg")},
                 timeout=10,
