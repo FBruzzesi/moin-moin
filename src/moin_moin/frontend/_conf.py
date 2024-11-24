@@ -7,7 +7,7 @@ ENV = os.getenv("ENV", "local")
 HOST = "localhost" if ENV in ("local", "dev") else "backend"
 BACKEND_URL: Final[str] = f"http://{HOST}:8081"
 
-INSTITUTION_MAPPING: Final[dict[str, str]] = {
+INSTITUTION_COLOR_MAPPING: Final[dict[str, str]] = {
     "Police Department": "#48b5a5",
     "Fire Department": "#7b64ab",
     "Hospital": "#20be64",
