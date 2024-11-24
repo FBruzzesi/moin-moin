@@ -26,9 +26,12 @@ class ClipModel:
     def predict(self: Self, image: Image, description: str) -> str:
         """Embed the image and return the closest text embedding."""
         img_emb = self.model.encode(image)
+        description_emb = self.model.encode(description)
+
         similarity_array_image = self.model.similarity(img_emb, self.text_embedding)
-        description_emb = torch.zeros(similarity_array_image.shape)
-        description_emb = self.model.encode(description) if description != "" else description_emb
-        similarity_array_description = self.model.similarity(description_emb, self.text_embedding)
+        similarity_array_description = torch.zeros(similarity_array_image.shape)
+        if description != "":
+            similarity_array_description = self.model.similarity(description_emb, self.text_embedding)
+
         combined_similarity = similarity_array_image + similarity_array_description
         return self.labels[combined_similarity.argmax().item()]
