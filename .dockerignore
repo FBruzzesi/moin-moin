@@ -6,6 +6,7 @@
 data/
 docker/
 nbs/
+notebooks/
 models/
 db/
 

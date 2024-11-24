@@ -21,7 +21,9 @@ Moin Moin is a web application that serves two goals:
 ## Submission Items
 
 * **Deliverable**: Web application with the two pages, one for the citizens to report the issues and another for the municipality officers to see the reported problem both on a map and on a table. This is easily deployable via docker compose.
-* **Documentation**: TODO
+* **Documentation**: Technical documentation on:
+  * How to run and deploy the solution.
+  * Internal architecture.
 
 ## Future Work
 
@@ -31,3 +33,5 @@ There are a lot of features that we would like to implement to improve the appli
 * Allow a citizen to upload more than one image at the time.
 * The categorization of the reported issues could be improved by using a pretrained Image-Text-to-Text LLM model (such as [Qwen2-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)), with structured output (being the categories we have). The drawback of this approach is that it would require significant more computational resources.
 * For the municipality officers in charge, we would consider the possibility of automatically create bouding boxes on the issue for each image, and allow them to change it if necessary before dispatching the work downstream.
+* Improve categories and subcategories of the reported issues, possibly allow to add new categories on the go.
+* Add a layer to make sure that the uploaded images are not offensive or inappropriate.
