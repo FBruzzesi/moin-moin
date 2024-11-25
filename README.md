@@ -56,6 +56,7 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 4. **Deployability**
 
     * Ready-to-use solution deployable via Docker Compose for quick adoption.
+    * Extremely frugal in terms of resources required to run it, making it suitable for small municipalities.
 
 5. **Technical Documentation**
 
