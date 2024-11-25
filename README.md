@@ -175,7 +175,7 @@ If docker is not an option, you can still run the application manually. We recom
 
     ```bash
     uv venv -p 3.12
-    source venv/bin/activate
+    source .venv/bin/activate
     ```
 
 3. Install the required dependencies:
