@@ -102,26 +102,26 @@ By integrating these features, Moin Moin would become a comprehensive platform f
 The repository is organized as follows:
 
 ```terminal
-moin-moin
-├── LICENSE
-├── README.md
-├── db
+moin-moin/
+├── db/
 │   └── .gitkeep
-├── docker
+├── docker/
 │   ├── backend.dockerfile
 │   └── frontend.dockerfile
-├── docker-compose.yml
-├── models
+├── models/
 │   └── .gitkeep
-├── notebooks
+├── notebooks/
 │   ├── *.ipynb
 │   └── requirements.txt
-├── pyproject.toml
-├── src
-│   └── moin_moin
+├── src/
+│   └── moin_moin/
 │       ├── __init__.py
-│       ├── backend
-│       └── frontend
+│       ├── backend/
+│       └── frontend/
+├── docker-compose.yml
+├── LICENSE
+├── pyproject.toml
+├── README.md
 └── uv.lock
 ```
 
