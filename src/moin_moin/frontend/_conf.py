@@ -8,10 +8,9 @@ HOST = "localhost" if ENV in ("local", "dev") else "backend"
 BACKEND_URL: Final[str] = f"http://{HOST}:8081"
 
 INSTITUTION_COLOR_MAPPING: Final[dict[str, str]] = {
-    "Infrastructure": "#48b5a5",
-    "Public Safety": "#7b64ab",
-    "Waste Management and Cleanliness": "#20be64",
-    "Public Amenities and Facilities": "#fb3c31",
-    "Street Signage and Markings": "#f7bb97",
-
+    "Infrastructure": "#50734e",
+    "Public Safety": "#756d4d",
+    "Waste Management and Cleanliness": "#e6b710",
+    "Public Amenities and Facilities": "#7921c2",
+    "Street Signage and Markings": "#db0ba7",
 }
