@@ -1,6 +1,25 @@
 # Moin moin: Empowering Communities to Build Better Cities
 
-Moin moin is a project created and developed by @fabridamicelli, @FBruzzesi, and @JurijWollert during the [NumHack 2024](https://github.com/numfocus/numhack-2024) hackaton for the category **build**.
+Moin moin is a project created and developed by [@fabridamicelli](https://github.com/fabridamicelli), [@FBruzzesi](https://github.com/FBruzzesi), and [@JurijWollert](https://github.com/JurijWollert) during the [NumHack 2024](https://github.com/numfocus/numhack-2024) hackaton for the category **build**.
+
+## Table of Contents
+
+- [Moin moin: Empowering Communities to Build Better Cities](#moin-moin-empowering-communities-to-build-better-cities)
+  - [Table of Contents](#table-of-contents)
+  - [Project Title](#project-title)
+  - [Description](#description)
+  - [Core Features](#core-features)
+  - [Submission Items](#submission-items)
+  - [Future Work](#future-work)
+  - [Repository Structure](#repository-structure)
+  - [Getting started](#getting-started)
+    - [Docker Compose](#docker-compose)
+    - [Manual Setup](#manual-setup)
+  - [Tech Stack](#tech-stack)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+  - [Contributors](#contributors)
+  - [License](#license)
 
 ## Project Title
 
@@ -45,10 +64,7 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 ## Submission Items
 
 * **Deliverable**: A fully functional web application featuring both the citizen reporting page and the municipal officer dashboard.
-* **Documentation**:
-
-    * Deployment instructions (via Docker Compose).
-    * Internal architecture and workflow explanation
+* **Documentation**: [Repository Structure](#repository-structure), [Getting Started](#getting-started), and [Tech Stack](#tech-stack) sections.
 
 ## Future Work
 
@@ -79,3 +95,134 @@ To enhance its utility and scalability, we envision several improvements:
     * Community Engagement: Integrate social features, such as the ability for citizens to upvote reported issues, highlighting problems that affect many.
 
 By integrating these features, Moin Moin would become a comprehensive platform for civic engagement and urban development, driving meaningful improvements in cities worldwide.
+
+## Repository Structure
+
+The repository is organized as follows:
+
+```terminal
+moin-moin
+├── LICENSE
+├── README.md
+├── db
+│   └── .gitkeep
+├── docker
+│   ├── backend.dockerfile
+│   └── frontend.dockerfile
+├── docker-compose.yml
+├── models
+│   └── .gitkeep
+├── notebooks
+│   ├── *.ipynb
+│   └── requirements.txt
+├── pyproject.toml
+├── src
+│   └── moin_moin
+│       ├── __init__.py
+│       ├── backend
+│       └── frontend
+└── uv.lock
+```
+
+- The main codebase is located in the `src/moin_moin` directory, which contains two subdirectories: `backend` and `frontend`. The backend directory contains the FastAPI API, which serves as the backend for the web application. The frontend directory contains the Streamlit web application, which serves as the frontend for the web application.
+
+- The `docker` directory contains the Dockerfiles for building the backend and frontend images. The `docker-compose.yml` file is used to define the services for running the application using Docker Compose.
+
+- `model` and `db` directories are used to store the models and the database, respectively. These are currently empty as the models and database are not included in the repository. Yet the first time the application is run, the models will be downloaded and the database will be created. These directories are mounted as volumes in the Docker Compose configuration.
+
+- The `notebooks` directory contains Jupyter notebooks used for downloading images and evaluating the model. The `requirements.txt` file contains the dependencies for the notebooks.
+
+## Getting started
+
+### Docker Compose
+
+The simplest and safest way to run the application is via [Docker Compose](https://docs.docker.com/compose/):
+
+1. Clone and move into the repository:
+
+    ```bash
+    git clone https://github.com/FBruzzesi/moin-moin.git
+    cd moin-moin
+    ```
+
+2. Build and run the application:
+
+    ```bash
+    docker-compose up --build -d
+    ```
+
+3. Now the webapp will be available at `http://localhost:8501`, and the endpoint for the API will be at `http://localhost:8081`.
+
+4. To stop the application, run:
+
+    ```bash
+    docker-compose down
+    ```
+
+### Manual Setup
+
+If docker is not an option, you can still run the application manually. We recommend using a virtual environment to avoid conflicts with your system's Python installation.
+
+1. Clone and move into the repository:
+
+    ```bash
+    git clone https://github.com/FBruzzesi/moin-moin.git
+    cd moin-moin
+    ```
+
+2. Create and activate a virtual environment:
+
+    ```bash
+    uv venv -p 3.12
+    source venv/bin/activate
+    ```
+
+3. Install the required dependencies:
+
+    ```bash
+    uv pip install -e . --all-extras
+    ```
+
+    This will install all the dependencies in the same virtual environment (both for frontend and backend).
+
+4. At this point, two terminals are needed to run the frontend and the backend. In the first terminal, run the backend:
+
+    ```bash
+    fastapi run src/moin_moin/backend/api.py --port 8081
+    ```
+
+    This will start the backend server at `http://localhost:8081`.
+
+5. In the second terminal, run the frontend:
+
+    ```bash
+    streamlit run src/moin_moin/frontend/app.py --server.port=8501 --server.address=0.0.0.0
+    ```
+
+Now the webapp will be available at `http://localhost:8501`, and the endpoint for the API will be at `http://localhost:8081`.
+
+## Tech Stack
+
+### Backend
+
+- [FastAPI](https://fastapi.tiangolo.com/): A modern, fast (high-performance), web framework for building APIs based on standard Python type hints.
+- [SQLModel](https://sqlmodel.tiangolo.com/): A SQL database interface for FastAPI that simplifies database operations. We used [SQLite](https://www.sqlite.org/index.html) as the database engine.
+- [Sentence-Transformers](https://www.sbert.net/): A Python library for computing sentence embeddings using transformer models. We used the [CLIP](https://www.sbert.net/examples/applications/image-search/README.html?highlight=clip) model to process images and descriptions in the same embedding space.
+
+### Frontend
+
+- [Streamlit](https://streamlit.io/): An open-source app framework for Machine Learning and Data Science projects. We used Streamlit to create the frontend web application for Moin Moin.
+- [Geopy](https://geopy.readthedocs.io/en/stable/): A Python library for geocoding and reverse geocoding. We used Geopy to convert human-readable addresses into latitude and longitude coordinates of the reported issues.
+- [httpx](https://www.python-httpx.org/): A fully featured HTTP client for Python 3, which provides sync and async APIs, and support for both HTTP/1.1 and HTTP/2.
+
+## Contributors
+
+| Name | GitHub Profile |
+|------|----------------|
+| Fabrizio Damicelli | [@fabridamicelli](https://github.com/fabridamicelli) |
+| Francesco Bruzzesi | [@FBruzzesi](https://github.com/FBruzzesi)           |
+| Jurij Wollert      | [@JurijWollert](https://github.com/JurijWollert)     |
+
+## License
+
+This project is licensed under the Apache-2.0 license - see the [LICENSE](LICENSE) file for details.
