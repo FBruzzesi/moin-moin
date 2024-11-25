@@ -39,13 +39,14 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 ## Core Features
 
 1. **Citizen-Friendly Reporting**
-  
+
     * Simple and intuitive interface for reporting urban issues digitally.
     * Ability to attach an image, mark a location on the map, and add an optional description.
 
 2. **Automatic categorization of issues**
 
-    * Uses a CLIP-based model to process images and descriptions into predefined departments (TODO: Add examples).
+    * Uses a CLIP-based model to process images and descriptions into predefined departments.
+    * Currently the possibilities are: Infrastructure, Public Safety, Waste Management and Cleanliness, Public Amenities and Facilities, Street Signage and Markings.
 
 3. **Dashboard for Officials**
 
@@ -53,7 +54,7 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
     * Tabular view for sorting and filtering issues by category, priority, time since upload.
 
 4. **Deployability**
-  
+
     * Ready-to-use solution deployable via Docker Compose for quick adoption.
 
 5. **Technical Documentation**
@@ -81,7 +82,7 @@ To enhance its utility and scalability, we envision several improvements:
     * Image Annotation Tools: Automatically generate bounding boxes around detected issues in uploaded images and allow citizens or municipal officers to adjust them as needed.
 
 3. **Administrative Tools**
-  
+
     * Customizable Categories: Enable municipalities to define and update issue categories dynamically to adapt to local needs.
     * Content Moderation: Implement a layer to automatically flag inappropriate or offensive images using AI-driven filters.
 
