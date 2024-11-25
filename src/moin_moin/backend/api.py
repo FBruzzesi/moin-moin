@@ -22,6 +22,7 @@ from sqlmodel import select
 from moin_moin.backend._db import Prediction
 from moin_moin.backend._db import PublicRecord
 from moin_moin.backend._db import UserUploadData
+from moin_moin.backend._institutions import INSTITUTIONS
 from moin_moin.backend._ml import ClipModel
 
 if TYPE_CHECKING:
@@ -35,14 +36,6 @@ ML_MODEL: dict[str, ClipModel] = {}
 
 DB_NAME: Final[str] = "sqlite:///db/moin-moin.db"
 ENGINE: Final[Engine] = create_engine(DB_NAME)
-
-INSTITUTIONS = {
-    "Police Department": "The police deals with crime and violence related topics.",
-    "Fire Department": "The fire department deals with fire and other emergency situations.",
-    "Hospital": "The hospital deals with health and medical related topics.",
-    "Garbage Disposal": "The garbage disposal deals with waste and recycling related topics.",
-    "Construction Department": "The construction department deals with building and infrastructure related topics.",
-}
 
 
 def get_session() -> Generator[Session, None, None]:
