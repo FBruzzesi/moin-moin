@@ -68,12 +68,11 @@ def root() -> dict[str, str]:
 
 
 @app.post("/save")
-async def save(  # noqa: PLR0913
+async def save(
     session: SessionDep,
     latitude: Annotated[float, Form()],
     longitude: Annotated[float, Form()],
     notes: Annotated[str, Form()],
-    tags: Annotated[str, Form()],
     image_bytes: Annotated[UploadFile, File()],
 ) -> dict[str, int | None]:
     """Save the input data into database records into user upload data table."""
@@ -83,7 +82,6 @@ async def save(  # noqa: PLR0913
         latitude=latitude,
         longitude=longitude,
         notes=notes,
-        tags=tags,
     )
 
     session.add(record)
@@ -121,7 +119,7 @@ async def load_records(session: SessionDep) -> list[PublicRecord]:
         UserUploadData.latitude,
         UserUploadData.longitude,
         UserUploadData.notes,
-        UserUploadData.tags,
+        UserUploadData.timestamp,
         Prediction.prediction,
     ).join(Prediction)
     records = session.exec(statement).all()
