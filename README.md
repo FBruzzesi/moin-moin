@@ -69,8 +69,8 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 * **Deliverable**: A fully functional web application featuring both the citizen reporting page and the municipal officer dashboard.
 * **Documentation**: [Repository Structure](#repository-structure), [Getting Started](#getting-started), and [Tech Stack](#tech-stack) sections.
 * **Demo Video**: A video showcasing the application
-    
-    [![Watch it now](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view)](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view)
+
+    [Watch it now](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view)
 
 ## Future Work
 
