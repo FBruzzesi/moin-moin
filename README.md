@@ -36,6 +36,7 @@ Its core goals are:
 
 By streamlining this interaction, Moin Moin empowers citizens to actively participate in improving their communities and helps municipalities optimize their response efforts. This act of active citizenship aligns with the principles of the [broken windows theory](https://en.wikipedia.org/wiki/Broken_windows_theory), which posits that addressing small-scale urban problems promptly can prevent more severe decay and foster civic pride of communities.
 
+
 ## Core Features
 
 1. **Citizen-Friendly Reporting**
@@ -67,6 +68,14 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 
 * **Deliverable**: A fully functional web application featuring both the citizen reporting page and the municipal officer dashboard.
 * **Documentation**: [Repository Structure](#repository-structure), [Getting Started](#getting-started), and [Tech Stack](#tech-stack) sections.
+* **Demo Video**: A video showcasing the core features of the application.
+
+    <html>
+    <body>    
+    <iframe src="https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view" ></iframe>
+    <iframe allowfullscreen="allowfullscreen" src="https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view" ></iframe>
+    </body>
+    </html>
 
 ## Future Work
 
