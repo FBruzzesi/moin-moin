@@ -2,6 +2,9 @@
 
 Moin moin is a project created and developed by [@fabridamicelli](https://github.com/fabridamicelli), [@FBruzzesi](https://github.com/FBruzzesi), and [@JurijWollert](https://github.com/JurijWollert) during the [NumHack 2024](https://github.com/numfocus/numhack-2024) hackaton for the category **build**.
 
+TL;DR: Watch [this overview video](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view).
+
+
 ## Table of Contents
 
 - [Moin moin: Empowering Communities to Build Better Cities](#moin-moin-empowering-communities-to-build-better-cities)
@@ -68,7 +71,7 @@ By streamlining this interaction, Moin Moin empowers citizens to actively partic
 
 * **Deliverable**: A fully functional web application featuring both the citizen reporting page and the municipal officer dashboard.
 * **Documentation**: [Repository Structure](#repository-structure), [Getting Started](#getting-started), and [Tech Stack](#tech-stack) sections.
-* **Demo Video**: A video showcasing the application, [watch it now](moin-moin-submission-video).
+* **Demo Video**: A video showcasing the application, [watch it now](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view).
 
 ## Future Work
 
