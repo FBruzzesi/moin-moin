@@ -2,7 +2,8 @@
 
 Moin moin is a project created and developed by [@fabridamicelli](https://github.com/fabridamicelli), [@FBruzzesi](https://github.com/FBruzzesi), and [@JurijWollert](https://github.com/JurijWollert) during the [NumHack 2024](https://github.com/numfocus/numhack-2024) hackaton for the category **build**.
 
-## TL;DR: Watch [this overview video](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view).
+## TL;DR
+Watch [this overview video](https://drive.google.com/file/d/1LdL8C3gbD0zsMX4-NNfKo68huBDYRFSP/view).
 
 
 ## Table of Contents
